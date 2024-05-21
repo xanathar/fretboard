@@ -2,6 +2,7 @@ use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::glib;
 use gtk::prelude::*;
+use i18n_format::i18n_fmt;
 use std::cell::Cell;
 
 #[derive(Default, Clone, Copy, Debug)]
@@ -155,12 +156,13 @@ impl FretboardChordDiagramTopToggle {
 
         let tooltip_text = match imp.state.get() {
             TopToggleState::Off => gettext("Not Open"),
-            TopToggleState::Muted => gettext("Muted"),
-            TopToggleState::Open => format!(
-                "{} ({})",
-                // translators: this is an adjective, not a verb
-                gettext("Open"),
-                self.imp().note_name.get(),
+            TopToggleState::Muted => i18n_fmt!(
+                // translators: The text between the `{}` markers is the note of the muted string.
+                i18n_fmt("Muted ({})", self.imp().note_name.get())
+            ),
+            TopToggleState::Open => i18n_fmt!(
+                // translators: The text between the `{}` markers is the note of the open string.
+                i18n_fmt("Open ({})", self.imp().note_name.get())
             ),
         };
 
